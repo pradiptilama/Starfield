@@ -1,20 +1,74 @@
-//your code here
-void setup()
-{
-	//your code here
-}
-void draw()
-{
-	//your code here
-}
-class Particle
-{
-	//your code here
+// Array of stars
+Star[] stars = new Star[600];
+
+void setup() {
+  size(600, 600);
+  smooth();
+  stroke(255);
+  strokeWeight(6);
+
+  // Init all stars
+  for (int i=0; i<stars.length; i++) 
+    stars[i] = new Star();
 }
 
-class OddballParticle //inherits from Particle
-{
-	//your code here
+void draw() {
+  background(#040C1C);
+  noStroke();
+  fill(#083110);
+  //rect(0, 460, 600, 200);
+  
+  // Draw all stars wrt center of screen
+  translate(0.5*width, 0.5*height);
+  
+  // Update and draw all stars
+  for (int i=0; i<stars.length; i++) {
+    stars[i].update();
+    stars[i].draw();
+  }
+}
+
+
+class Star {
+  // Star coordinates in 3D
+  float x;
+  float y;
+  float z;
+  
+  Star() {
+    x = random(-5000, 5000);
+    y = random(-5000, 5000);
+    z = random(0, 2000);
+  }
+  
+  void update() {
+    z-=10;        // Move star closer to viewport
+    if (z <= 0.0) // Reset star if it passes viewport
+      reset();
+  }
+  
+  void reset() {
+    // Reset star to a position far away
+    x = random(-5000, 5000);
+    y = random(-5000, 5000);
+    z = 2000.0;
+  }
+
+  void draw() {
+    // Project star only viewport
+    float offsetX = 100.0*(x/z);
+    float offsetY = 100.0*(y/z);
+    float scaleZ = 0.0001*(2000.0-z);
+
+    // Draw this star
+    pushMatrix();
+    translate(offsetX, offsetY);
+    scale(scaleZ);
+    fill(#C3CBCB);
+    ellipse(0,0,20,20);
+    popMatrix();
+    //rect(0, 460, 600, 200);
+  }
 }
 
 
